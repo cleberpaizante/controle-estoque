@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorriso das Baterias - Estoque</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>😁 SORRISO DAS BATERIAS - CONTROLE DE ESTOQUE</h1>
+        </header>
+
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total de Modelos</h3>
+                <p id="card-total-models">0</p>
+            </div>
+            <div class="card">
+                <h3>Baterias em Estoque</h3>
+                <p id="card-total-items">0 Qtd.</p>
+            </div>
+            <div class="card highlight">
+                <h3>Valor Total Investido</h3>
+                <p id="card-total-value">R$ 0.00</p>
+            </div>
+        </div>
+
+        <section class="form-section">
+            <h2>Cadastrar Nova Bateria</h2>
+            <form id="product-form">
+                <div class="form-group">
+                    <label for="name">Selecione a Bateria:</label>
+                    <select id="name" required>
+                        <option value="" disabled selected>Escolha a bateria...</option>
+                        
+                        <optgroup label="🚗 Automotiva - Linha Leve (40Ah a 50Ah)">
+                            <option value="Bateria Moura 45Ah">Moura 45Ah</option>
+                            <option value="Bateria Heliar 45Ah">Heliar 45Ah</option>
+                            <option value="Bateria ACDelco 45Ah">ACDelco 45Ah</option>
+                            <option value="Bateria Bosch 45Ah">Bosch 45Ah</option>
+                            <option value="Bateria Tudor 45Ah">Tudor 45Ah</option>
+                            <option value="Bateria Zetta 45Ah">Zetta 45Ah</option>
+                            <option value="Bateria Pioneiro 45Ah">Pioneiro 45Ah</option>
+                            <option value="Bateria Cral 45Ah">Cral 45Ah</option>
+                            <option value="Bateria Erbs 45Ah">Erbs 45Ah</option>
+                            <option value="Bateria Strada 45Ah">Strada 45Ah</option>
+                            <option value="Bateria Ajax 45Ah">Ajax 45Ah</option>
+                            <option value="Bateria Moura 50Ah">Moura 50Ah</option>
+                            <option value="Bateria Heliar 50Ah">Heliar 50Ah</option>
+                        </optgroup>
+
+                        <optgroup label="🚗 Automotiva - Principais (60Ah)">
+                            <option value="Bateria Moura 60Ah">Moura 60Ah</option>
+                            <option value="Bateria Heliar 60Ah">Heliar 60Ah</option>
+                            <option value="Bateria ACDelco 60Ah">ACDelco 60Ah</option>
+                            <option value="Bateria Bosch 60Ah">Bosch 60Ah</option>
+                            <option value="Bateria Tudor 60Ah">Tudor 60Ah</option>
+                            <option value="Bateria Zetta 60Ah">Zetta 60Ah</option>
+                            <option value="Bateria Pioneiro 60Ah">Pioneiro 60Ah</option>
+                            <option value="Bateria Cral 60Ah">Cral 60Ah</option>
+                            <option value="Bateria Erbs 60Ah">Erbs 60Ah</option>
+                            <option value="Bateria Strada 60Ah">Strada 60Ah</option>
+                            <option value="Bateria Ajax 60Ah">Ajax 60Ah</option>
+                        </optgroup>
+
+                        <optgroup label="🚗 Automotiva - Médias/Grandes (70Ah a 95Ah)">
+                            <option value="Bateria Moura 70Ah">Moura 70Ah</option>
+                            <option value="Bateria Heliar 70Ah">Heliar 70Ah</option>
+                            <option value="Bateria ACDelco 70Ah">ACDelco 70Ah</option>
+                            <option value="Bateria Bosch 70Ah">Bosch 70Ah</option>
+                            <option value="Bateria Tudor 70Ah">Tudor 70Ah</option>
+                            <option value="Bateria Zetta 70Ah">Zetta 70Ah</option>
+                            <option value="Bateria Pioneiro 70Ah">Pioneiro 70Ah</option>
+                            <option value="Bateria Cral 70Ah">Cral 70Ah</option>
+                            <option value="Bateria Moura 75Ah">Moura 75Ah</option>
+                            <option value="Bateria Heliar 75Ah">Heliar 75Ah</option>
+                            <option value="Bateria Tudor 78Ah">Tudor 78Ah</option>
+                            <option value="Bateria Moura 90Ah">Moura 90Ah</option>
+                            <option value="Bateria Heliar 95Ah">Heliar 95Ah</option>
+                        </optgroup>
+
+                        <optgroup label="🔄 Start-Stop / Tecnologia Especial (EFB e AGM)">
+                            <option value="Bateria Moura 60Ah EFB (Start-Stop)">Moura 60Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Moura 72Ah EFB (Start-Stop)">Moura 72Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Moura 70Ah AGM (Start-Stop)">Moura 70Ah AGM (Start-Stop)</option>
+                            <option value="Bateria Moura 80Ah AGM (Start-Stop)">Moura 80Ah AGM (Start-Stop)</option>
+                            <option value="Bateria Heliar 60Ah EFB (Start-Stop)">Heliar 60Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Heliar 72Ah EFB (Start-Stop)">Heliar 72Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Heliar 70Ah AGM (Start-Stop)">Heliar 70Ah AGM (Start-Stop)</option>
+                            <option value="Bateria Heliar 80Ah AGM (Start-Stop)">Heliar 80Ah AGM (Start-Stop)</option>
+                            <option value="Bateria ACDelco 60Ah EFB (Start-Stop)">ACDelco 60Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Bosch 60Ah EFB (Start-Stop)">Bosch 60Ah EFB (Start-Stop)</option>
+                            <option value="Bateria Tudor 60Ah EFB (Start-Stop)">Tudor 60Ah EFB (Start-Stop)</option>
+                        </optgroup>
+
+                        <optgroup label="🏍️ Motocicleta (5Ah a 12Ah)">
+                            <option value="Bateria Route 5Ah">Route 5Ah</option>
+                            <option value="Bateria Route 7Ah">Route 7Ah</option>
+                            <option value="Bateria Route 6Ah">Route 6Ah</option>
+                            <option value="Bateria Route 10Ah">Route 10Ah</option>
+                            <option value="Bateria Moura Moto 5Ah">Moura Moto 5Ah</option>
+                            <option value="Bateria Moura Moto 7Ah">Moura Moto 7Ah</option>
+                            <option value="Bateria Moura Moto 6Ah">Moura Moto 6Ah</option>
+                            <option value="Bateria Heliar Moto 5Ah">Heliar Moto 5Ah</option>
+                            <option value="Bateria Heliar Moto 6Ah">Heliar Moto 6Ah</option>
+                            <option value="Bateria Heliar Moto 7Ah">Heliar Moto 7Ah</option>
+                            <option value="Bateria Pioneiro Moto 5Ah">Pioneiro Moto 5Ah</option>
+                            <option value="Bateria Pioneiro Moto 7Ah">Pioneiro Moto 7Ah</option>
+                            <option value="Bateria Erbs Moto 5Ah">Erbs Moto 5Ah</option>
+                            <option value="Bateria Erbs Moto 7Ah">Erbs Moto 7Ah</option>
+                        </optgroup>
+
+                        <optgroup label="🚜 Linha Pesada (Caminhão / Ônibus / Máquinas)">
+                            <option value="Bateria Moura 100Ah">Moura 100Ah</option>
+                            <option value="Bateria Moura 150Ah">Moura 150Ah</option>
+                            <option value="Bateria Moura 180Ah">Moura 180Ah</option>
+                            <option value="Bateria Moura 220Ah">Moura 220Ah</option>
+                            <option value="Bateria Heliar 100Ah">Heliar 100Ah</option>
+                            <option value="Bateria Heliar 150Ah">Heliar 150Ah</option>
+                            <option value="Bateria Heliar 180Ah">Heliar 180Ah</option>
+                            <option value="Bateria Pioneiro 100Ah">Pioneiro 100Ah</option>
+                            <option value="Bateria Pioneiro 150Ah">Pioneiro 150Ah</option>
+                            <option value="Bateria Pioneiro 180Ah">Pioneiro 180Ah</option>
+                            <option value="Bateria Bosch 100Ah">Bosch 100Ah</option>
+                            <option value="Bateria Bosch 150Ah">Bosch 150Ah</option>
+                            <option value="Bateria Bosch 170Ah">Bosch 170Ah</option>
+                            <option value="Bateria Tudor 100Ah">Tudor 100Ah</option>
+                            <option value="Bateria Tudor 150Ah">Tudor 150Ah</option>
+                            <option value="Bateria Cral 150Ah">Cral 150Ah</option>
+                            <option value="Bateria Cral 180Ah">Cral 180Ah</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Categoria (carro, moto, maquina):</label>
+                    <input type="text" id="category" required placeholder="Ex: carro">
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="quantity">Quantidade em Estoque:</label>
+                        <input type="number" id="quantity" min="0" required placeholder="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cost">Preço de Custo (R$):</label>
+                        <input type="number" id="cost" min="0" step="0.01" required placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price">Preço de Venda (R$):</label>
+                        <input type="number" id="price" min="0" step="0.01" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-save">Salvar no Estoque</button>
+            </form>
+        </section>
+
+        <section class="table-section">
+            <h2>Baterias em Estoque</h2>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 Buscar por nome ou categoria...">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="btn-filter active" onclick="filterByPreset('todos')">📋 Todas</button>
+                <button class="btn-filter" onclick="filterByPreset('carro')">🚗 Carro (60Ah/70Ah)</button>
+                <button class="btn-filter" onclick="filterByPreset('moto')">🏍️ Moto (5Ah/7Ah)</button>
+                <button class="btn-filter" onclick="filterByPreset('pesada')">🚜 Máquinas / Caminhão</button>
+                <button class="btn-filter" onclick="filterByPreset('moura')">⚡ Moura</button>
+                <button class="btn-filter" onclick="filterByPreset('heliar')">⚡ Heliar</button>
+            </div>
+
+            <div class="table-container">
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Modelo / Bateria</th>
+                            <th>Categoria</th>
+                            <th>Qtd.</th>
+                            <th>P. Custo</th> 
+                            <th>P. Venda</th>  
+                            <th>Total em Estoque</th>
+                            <th>Última Modificação</th>
+                            <th>Movimentação / Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="table-section history-section" style="margin-top: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>📋 Histórico Permanente de Movimentações</h2>
+                <div style="display: flex; gap: 10px;">
+                    <!-- BOTÃO DO EXCEL ADICIONADO AQUI -->
+                    <button type="button" class="btn-action" style="padding: 6px 12px; font-size: 12px; height: auto; background-color: #16a34a; color: white;" onclick="exportToExcel()">📊 Exportar Excel</button>
+                    <button type="button" class="btn-action btn-delete" style="padding: 6px 12px; font-size: 12px; height: auto;" onclick="clearHistory()">Limpar Histórico</button>
+                </div>
+            </div>
+            
+            <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Data / Hora</th>
+                            <th>Ação</th>
+                            <th>Bateria / Modelo</th>
+                            <th>Qtd. Alterada</th>
+                            <th>Estoque Atual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-list">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
