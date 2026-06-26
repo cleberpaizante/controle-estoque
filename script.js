@@ -1,6 +1,17 @@
-let products = JSON.parse(localStorage.getItem('sorriso_estoque')) || [];
-let inventoryHistory = JSON.parse(localStorage.getItem('sorriso_historico')) || [];
+// 1. IMPORTAR A BIBLIOTECA DO SUPABASE
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
+// 2. CREDENCIAIS DE CONEXÃO
+// ATENÇÃO: Substitua os textos abaixo pelos dados reais da aba SETTINGS -> API do seu Supabase
+const supabaseUrl = 'SUA_PROJECT_URL_AQUI'
+const supabaseKey = 'SUA_CHAVE_ANON_PUBLIC_AQUI'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+// VARIÁVEIS GLOBAIS (Agora começam vazias e são preenchidas pela nuvem)
+let products = [];
+let inventoryHistory = [];
+
+// ELEMENTOS DA TELA (Mantidos idênticos ao seu código)
 const productForm = document.getElementById('product-form');
 const nameInput = document.getElementById('name');
 const categoryInput = document.getElementById('category');
@@ -21,7 +32,22 @@ function getFormattedDateTime() {
     return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
-function addHistoryLog(actionType, productName, quantityChanged, finalQuantity) {
+// 3. ATUALIZADO: BUSCAR DADOS DA NUVEM AO ABRIR O SITE
+async function init() {
+    // Busca os produtos ordenados pelo nome
+    const { data: dataProdutos, error: errProd } = await supabase.from('produtos').select('*').order('name');
+    // Busca o histórico ordenado pelo id decrescente (mais recentes primeiro)
+    const { data: dataHistorico, error: errHist } = await supabase.from('historico').select('*').order('id', { ascending: false });
+
+    if (!errProd) products = dataProdutos || [];
+    if (!errHist) inventoryHistory = dataHistorico || [];
+
+    renderProducts();
+    renderHistory();
+}
+
+// 4. ATUALIZADO: SALVAR HISTÓRICO NA NUVEM
+async function addHistoryLog(actionType, productName, quantityChanged, finalQuantity) {
     const log = {
         timestamp: getFormattedDateTime(),
         action: actionType,
@@ -30,9 +56,14 @@ function addHistoryLog(actionType, productName, quantityChanged, finalQuantity) 
         final: finalQuantity
     };
     
-    inventoryHistory.unshift(log);
-    localStorage.setItem('sorriso_historico', JSON.stringify(inventoryHistory));
-    renderHistory();
+    const { error } = await supabase.from('historico').insert([log]);
+    
+    if (!error) {
+        // Recarrega o histórico local para manter a sincronia
+        const { data } = await supabase.from('historico').select('*').order('id', { ascending: false });
+        inventoryHistory = data || [];
+        renderHistory();
+    }
 }
 
 function renderHistory() {
@@ -80,7 +111,8 @@ function renderHistory() {
     });
 }
 
-function clearHistory() {
+// 5. ATUALIZADO: LIMPAR HISTÓRICO NA NUVEM
+async function clearHistory() {
     const SENHA_ADM = "cleber765"; 
     const senhaDigitada = prompt("Digite a senha de ADMINISTRADOR para limpar o histórico:");
 
@@ -88,26 +120,32 @@ function clearHistory() {
 
     if (senhaDigitada === SENHA_ADM) {
         if (confirm("Senha correta! Tem certeza que deseja apagar TODO o histórico permanente? Essa ação não pode ser desfeita.")) {
-            inventoryHistory = [];
-            localStorage.setItem('sorriso_historico', JSON.stringify(inventoryHistory));
-            renderHistory();
+            // Deleta todas as linhas da tabela histórico na nuvem
+            const { error } = await supabase.from('historico').delete().neq('id', 0);
+            
+            if (!error) {
+                inventoryHistory = [];
+                renderHistory();
+            } else {
+                alert("Erro ao limpar histórico na nuvem.");
+            }
         }
     } else {
         alert("❌ Senha incorreta! Acesso negado.");
     }
 }
+window.clearHistory = clearHistory; // Permite o HTML chamar a função
 
-// FUNÇÃO NOVA: CRIA E BAIXA O ARQUIVO EXCEL DO SEU HISTÓRICO
+// EXPORTAR EXCEL (Mantido igual, gerando a partir dos dados da nuvem)
 function exportToExcel() {
     if (inventoryHistory.length === 0) {
         alert("Não há dados no histórico para exportar!");
         return;
     }
 
-    // Cria a estrutura HTML que o Excel consegue ler como planilha
     let excelTemplate = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Histórico Sorriso</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
+        <head><meta charset="UTF-8"></head>
         <body>
         <table border="1">
             <tr style="background-color: #2563eb; color: white; font-weight: bold;">
@@ -119,7 +157,6 @@ function exportToExcel() {
             </tr>
     `;
 
-    // Preenche as linhas da planilha com as informações salvas
     inventoryHistory.forEach(log => {
         excelTemplate += `
             <tr>
@@ -134,7 +171,6 @@ function exportToExcel() {
 
     excelTemplate += `</table></body></html>`;
 
-    // Cria o arquivo virtual e força o download no computador ou celular
     const blob = new Blob([excelTemplate], { type: 'application/vnd.ms-excel' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -145,6 +181,7 @@ function exportToExcel() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+window.exportToExcel = exportToExcel;
 
 function renderProducts(productsToDisplay = products) {
     if (!productsList) return;
@@ -177,12 +214,10 @@ function renderProducts(productsToDisplay = products) {
     }
 
     productsToDisplay.forEach((product) => {
-        const globalIndex = products.indexOf(product);
         const qty = parseInt(product.quantity) || 0;
         const price = parseFloat(product.price) || 0;
         const cost = product.cost !== undefined ? parseFloat(product.cost) : 0;
         const totalProductValue = qty * price;
-        
         const lastUpdate = product.lastModified || '--/--/---- --:--';
 
         const row = document.createElement('tr');
@@ -195,20 +230,17 @@ function renderProducts(productsToDisplay = products) {
             <td style="color: #ffcc00; font-weight: bold;">R$ ${totalProductValue.toFixed(2)}</td>
             <td style="color: #94a3b8; font-size: 13px;">${lastUpdate}</td>
             <td>
-                <button class="btn-action btn-in" onclick="changeQuantity(${globalIndex}, 1)">+ Entrada</button>
-                <button class="btn-action btn-out" onclick="changeQuantity(${globalIndex}, -1)">- Venda</button>
-                <button class="btn-action btn-delete" onclick="deleteProduct(${globalIndex})">Excluir</button>
+                <button class="btn-action btn-in" onclick="changeQuantity(${product.id}, 1)">+ Entrada</button>
+                <button class="btn-action btn-out" onclick="changeQuantity(${product.id}, -1)">- Venda</button>
+                <button class="btn-action btn-delete" onclick="deleteProduct(${product.id})">Excluir</button>
             </td>
         `;
         productsList.appendChild(row);
     });
 }
 
-function saveToLocalStorage() {
-    localStorage.setItem('sorriso_estoque', JSON.stringify(products));
-}
-
-productForm.addEventListener('submit', function(event) {
+// 6. ATUALIZADO: CADASTRAR NOVO PRODUTO NA NUVEM
+productForm.addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const nameValue = nameInput.value.trim();
@@ -224,63 +256,84 @@ productForm.addEventListener('submit', function(event) {
         lastModified: currentDateTime
     };
 
-    products.push(newProduct);
-    saveToLocalStorage();
-    
-    addHistoryLog('Cadastro', newProduct.name, qtyValue, qtyValue);
-    
-    resetFilters();
-    renderProducts();
+    // Salva no banco de dados
+    const { error } = await supabase.from('produtos').insert([newProduct]);
 
-    productForm.reset();
-    nameInput.focus();
+    if (!error) {
+        await addHistoryLog('Cadastro', newProduct.name, qtyValue, qtyValue);
+        productForm.reset();
+        nameInput.focus();
+        // Recarrega do banco para atualizar a tela com o ID correto do banco
+        init();
+    } else {
+        alert("Erro ao cadastrar produto na nuvem.");
+    }
 });
 
-function changeQuantity(index, amount) {
-    const product = products[index];
+// 7. ATUALIZADO: ALTERAR QUANTIDADE NA NUVEM (USANDO ID DO BANCO)
+async function changeQuantity(idElemento, amount) {
+    // Localiza o produto na lista local pelo ID do banco de dados
+    const product = products.find(p => p.id === idElemento);
+    if (!product) return;
+
     const originalQty = parseInt(product.quantity) || 0;
     
     if (amount === -1) {
         const confirmarVenda = confirm(`Confirmar a venda de 1 unidade de: "${product.name}"?`);
-        if (!confirmarVenda) {
-            return; 
+        if (!confirmarVenda) return; 
+    }
+    
+    let novaQuantidade = originalQty + amount;
+    if (novaQuantidade < 0) novaQuantidade = 0;
+
+    const currentDateTime = getFormattedDateTime();
+
+    // Atualiza o registro específico na nuvem
+    const { error } = await supabase.from('produtos')
+        .update({ quantity: novaQuantidade, lastModified: currentDateTime })
+        .eq('id', idElemento);
+
+    if (!error) {
+        product.quantity = novaQuantidade;
+        product.lastModified = currentDateTime;
+        
+        const type = amount > 0 ? 'Entrada' : 'Venda';
+        await addHistoryLog(type, product.name, 1, novaQuantidade);
+
+        applyCurrentActiveFilter();
+    } else {
+        alert("Erro ao atualizar quantidade na nuvem.");
+    }
+}
+window.changeQuantity = changeQuantity; // Permite o HTML chamar a função
+
+// 8. ATUALIZADO: EXCLUIR PRODUTO DA NUVEM
+async function deleteProduct(idElemento) {
+    const product = products.find(p => p.id === idElemento);
+    if (!product) return;
+
+    if (confirm(`Remover do estoque permanente: "${product.name}"?`)) {
+        await addHistoryLog('Exclusão', product.name, product.quantity || 0, 0);
+        
+        // Deleta da nuvem usando o ID do banco
+        const { error } = await supabase.from('produtos').delete().eq('id', idElemento);
+        
+        if (!error) {
+            init(); // Recarrega o estoque atualizado
+        } else {
+            alert("Erro ao deletar produto da nuvem.");
         }
     }
-    
-    product.quantity = originalQty + amount;
-    if (product.quantity < 0) product.quantity = 0;
-
-    const finalQty = product.quantity;
-    product.lastModified = getFormattedDateTime();
-
-    saveToLocalStorage();
-    
-    const type = amount > 0 ? 'Entrada' : 'Venda';
-    addHistoryLog(type, product.name, 1, finalQty);
-
-    applyCurrentActiveFilter();
 }
+window.deleteProduct = deleteProduct; // Permite o HTML chamar a função
 
-function deleteProduct(index) {
-    const productName = products[index].name;
-    const qtyCurrent = products[index].quantity || 0;
-    
-    if (confirm(`Remover do estoque permanente: "${productName}"?`)) {
-        addHistoryLog('Exclusão', productName, qtyCurrent, 0);
-        
-        products.splice(index, 1);
-        saveToLocalStorage();
-        
-        resetFilters();
-        renderProducts();
-    }
-}
-
+// PESQUISA E FILTROS (Mantidos iguaizinhos ao seu projeto)
 searchInput.addEventListener('input', function() {
     const searchTerm = searchInput.value.toLowerCase();
     
     document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
-    document.querySelector('.btn-filter[onclick*="todos"]').classList.add('active');
+    const btnTodos = document.querySelector('.btn-filter[onclick*="todos"]');
+    if(btnTodos) btnTodos.classList.add('active');
 
     const filtered = products.filter(product => {
         return product.name.toLowerCase().includes(searchTerm) || 
@@ -328,6 +381,7 @@ function filterByPreset(preset) {
 
     renderProducts(filtered);
 }
+window.filterByPreset = filterByPreset;
 
 function resetFilters() {
     document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
@@ -348,5 +402,5 @@ function applyCurrentActiveFilter() {
     renderProducts();
 }
 
-renderProducts();
-renderHistory();
+// INICIALIZA O SISTEMA PUXANDO OS DADOS DA NUVEM
+init();
