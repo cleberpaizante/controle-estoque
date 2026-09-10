@@ -1,41 +1,25 @@
 # 😁 Sorriso das Baterias — Controle de Estoque
 
-Sistema web para auxiliar o controle de estoque de baterias automotivas, motocicletas, caminhões e outros veículos. O projeto foi desenvolvido para uso em um comércio local, com foco em simplicidade, rapidez e facilidade de consulta.
+Sistema web para auxiliar o controle de estoque de baterias automotivas, motocicletas, caminhões e outros veículos. Foi desenvolvido para uso em um comércio local, com foco em simplicidade e consulta rápida.
 
 ## 🌐 Acesso direto
 
-A aplicação está disponível em: **[Abrir o sistema](https://cleberpaizante.github.io/controle-estoque/)**
+**[Abrir o sistema](https://cleberpaizante.github.io/controle-estoque/)**
 
-Também é possível acessar o código-fonte pelo [repositório no GitHub](https://github.com/cleberpaizante/controle-estoque).
+Também é possível acessar o [código-fonte no GitHub](https://github.com/cleberpaizante/controle-estoque).
 
 > **Projeto acadêmico:** demonstra o uso de HTML, CSS, JavaScript, formulários, tabelas, filtros e armazenamento de dados no navegador.
-
-## 📌 Sumário
-
-- [Sobre o projeto](#sobre-o-projeto)
-- [Objetivos](#objetivos)
-- [Funcionalidades](#funcionalidades)
-- [Tecnologias](#tecnologias)
-- [Como abrir e executar](#como-abrir-e-executar)
-- [Como utilizar](#como-utilizar)
-- [Armazenamento dos dados](#armazenamento-dos-dados)
-- [Imagens](#imagens-da-aplicação)
-- [Limitações e melhorias](#limitações-e-melhorias)
-
-## 📖 Sobre o projeto
-
-O sistema permite cadastrar modelos de bateria, controlar entradas e vendas, consultar quantidades atuais e acompanhar o histórico das movimentações. As informações são atualizadas na tela e ficam salvas no navegador utilizado.
 
 ## 🎯 Objetivos
 
 - Reduzir anotações manuais no controle do estoque.
 - Cadastrar baterias por modelo e categoria.
-- Registrar quantidade, custo de aquisição e preço de venda.
+- Registrar quantidade, custo e preço de venda.
 - Controlar entradas e saídas.
-- Exibir indicadores resumidos do estoque.
+- Exibir indicadores resumidos.
 - Pesquisar e filtrar produtos.
 - Manter histórico das movimentações.
-- Exportar o histórico para uma planilha compatível com Excel.
+- Exportar o histórico para Excel.
 
 ## ✨ Funcionalidades
 
@@ -43,9 +27,9 @@ O sistema permite cadastrar modelos de bateria, controlar entradas e vendas, con
 
 Exibe o total de modelos, a soma das baterias em estoque e o valor total investido, calculado pela quantidade multiplicada pelo custo de cada produto.
 
-### Cadastro de baterias
+### Cadastro
 
-Permite selecionar o modelo, informar a categoria, a quantidade inicial, o preço de custo e o preço de venda. Os modelos são organizados em grupos de linha leve, 60 Ah, linha pesada, motocicletas e Start-Stop (EFB/AGM).
+Permite selecionar o modelo, informar categoria, quantidade inicial, preço de custo e preço de venda. Os modelos são organizados em grupos de linha leve, 60 Ah, linha pesada, motocicletas e Start-Stop (EFB/AGM).
 
 ### Entradas, vendas e exclusão
 
@@ -53,75 +37,59 @@ Cada produto possui ações para acrescentar unidades (**Entrada**), retirar uni
 
 ### Pesquisa e filtros
 
-O campo de busca localiza produtos pelo nome ou categoria. Os filtros predefinidos ajudam a consultar grupos de produtos rapidamente.
+O campo de busca localiza produtos pelo nome ou categoria. Os filtros predefinidos facilitam a consulta por grupo ou marca.
 
-### Histórico permanente
+### Histórico e exportação
 
-Registra data e hora, ação realizada, modelo, quantidade alterada e estoque final. As ações identificadas são cadastro, entrada, venda e exclusão.
+O histórico registra data e hora, ação, modelo, quantidade alterada e estoque final. O botão **Exportar Excel** gera o arquivo `historico_estoque_sorriso.xls`.
 
-### Exportação e limpeza
-
-**Exportar Excel** gera o arquivo `historico_estoque_sorriso.xls`. A limpeza do histórico solicita senha de administrador e confirmação antes da exclusão definitiva.
+A limpeza do histórico solicita senha de administrador e confirmação antes da exclusão definitiva.
 
 > Em um sistema real, a senha não deve ficar exposta no código-fonte. Esta proteção é adequada apenas para uma versão local/demonstrativa.
 
 ## 🧰 Tecnologias
 
-- **HTML5:** estrutura da interface e dos formulários.
+- **HTML5:** estrutura da interface.
 - **CSS3:** aparência visual e layout responsivo.
-- **JavaScript:** regras de negócio, cálculos, filtros e exportação.
+- **JavaScript:** regras, cálculos, filtros e exportação.
 - **LocalStorage:** persistência dos produtos e do histórico.
-- **GitHub Pages:** publicação da aplicação online.
+- **GitHub Pages:** publicação online.
 
 ## ▶️ Como abrir e executar
 
 ### Acesso online — recomendado
 
 1. Clique em **[Abrir o sistema](https://cleberpaizante.github.io/controle-estoque/)**.
-2. Aguarde a página carregar.
-3. Use o formulário **Cadastrar Nova Bateria** para começar.
+2. Aguarde o carregamento.
+3. Use o formulário **Cadastrar Nova Bateria**.
 
-Não é necessário instalar nada para usar a versão online.
+Não é necessário instalar nada na versão online.
 
 ### Acesso local
 
-1. Clique em **Code** no GitHub.
-2. Escolha **Download ZIP** e extraia o arquivo, ou clone o repositório.
-3. Abra a pasta extraída.
-4. Abra o arquivo `index.html` em um navegador.
-5. O sistema será carregado localmente.
+1. No GitHub, clique em **Code** e escolha **Download ZIP**.
+2. Extraia a pasta baixada.
+3. Abra o arquivo `index.html` em um navegador.
 
 A aplicação é estática e não exige servidor ou banco de dados para funcionar localmente.
 
 ## 🧭 Como utilizar
 
-### Cadastrar um produto
-
-1. Acesse **Cadastrar Nova Bateria**.
-2. Selecione o modelo e informe a categoria.
-3. Preencha quantidade, custo e preço de venda.
-4. Clique em **Salvar no Estoque**.
-5. Confirme o produto na tabela e no histórico.
-
-### Registrar entrada ou venda
-
-1. Localize o produto na tabela.
-2. Clique em **Entrada** ou **Venda**.
-3. Informe a quantidade e confirme.
-4. Verifique o novo saldo e o histórico.
-
-### Pesquisar e exportar
-
-Digite um nome ou categoria na busca, ou selecione um filtro. Para exportar, role até **Histórico Permanente de Movimentações** e clique em **Exportar Excel**.
+1. Selecione o modelo e informe a categoria.
+2. Preencha quantidade, custo e preço de venda.
+3. Clique em **Salvar no Estoque**.
+4. Use **Entrada** para acrescentar unidades e **Venda** para retirar unidades.
+5. Pesquise ou filtre produtos na tabela.
+6. Consulte o histórico e use **Exportar Excel** quando necessário.
 
 ## 🗂️ Organização dos arquivos
 
 ```text
 controle-estoque/
-├── index.html   # Estrutura da interface
-├── style.css    # Estilos e responsividade
-├── script.js    # Regras e funcionalidades
-└── README.md    # Documentação do projeto
+├── index.html   # Interface
+├── style.css    # Estilos
+├── script.js    # Funcionalidades
+└── README.md    # Documentação
 ```
 
 ## 💾 Armazenamento dos dados
@@ -131,36 +99,33 @@ O sistema usa o `localStorage` do navegador:
 - `sorriso_estoque`: produtos cadastrados.
 - `sorriso_historico`: movimentações realizadas.
 
-Os dados ficam salvos no navegador e no dispositivo utilizado. Por isso, não são sincronizados automaticamente com outros computadores. Para evitar perdas, mantenha os arquivos exportados e use sempre o mesmo navegador e perfil.
+Os dados ficam salvos no navegador e no dispositivo utilizado. Não são sincronizados automaticamente com outros computadores.
 
 ## 🖼️ Imagens da aplicação
 
-As capturas serão adicionadas em `docs/screenshots/` conforme o sistema for documentado:
+### Tela inicial e formulário
 
-- `01-tela-inicial.png` — painel e indicadores.
-- `02-cadastro-bateria.png` — formulário preenchido.
-- `03-produto-cadastrado.png` — produto na tabela.
-- `04-movimentacoes.png` — entrada e venda.
-- `05-pesquisa-filtros.png` — busca e filtros.
-- `06-historico-exportacao.png` — histórico e exportação.
+![Tela inicial e formulário](Imagem%20Colada.png)
 
-## ⚠️ Regras e cuidados
+Mostra o título, os indicadores e o cadastro de uma nova bateria.
 
-- Não registre uma venda maior que o estoque disponível.
+### Estoque, filtros e histórico
+
+![Estoque, filtros e histórico](Imagem%20Colada%202.png)
+
+Mostra a tabela de estoque, os filtros e a área de histórico de movimentações.
+
+> Outras imagens serão adicionadas após os testes de cadastro, entrada, venda, pesquisa e exportação.
+
+## ⚠️ Regras e limitações
+
+- Não registre venda maior que o estoque disponível.
 - Informe os valores corretamente para manter os indicadores confiáveis.
-- A exclusão de um produto e a limpeza do histórico são ações permanentes.
+- A exclusão e a limpeza do histórico são ações permanentes.
 - O `localStorage` é específico do navegador e do dispositivo.
+- Não existe banco de dados centralizado ou login individual.
 
-## 🚧 Limitações e melhorias
-
-### Limitações atuais
-
-- Não existe banco de dados centralizado.
-- Não há login individual.
-- Os dados não são sincronizados entre dispositivos.
-- A senha de administrador está no código e não deve ser usada como segurança em produção.
-
-### Melhorias futuras
+## 🚀 Melhorias futuras
 
 - Criar uma API e um banco de dados.
 - Adicionar autenticação e níveis de acesso.
@@ -168,7 +133,6 @@ As capturas serão adicionadas em `docs/screenshots/` conforme o sistema for doc
 - Criar relatórios e alertas de estoque baixo.
 - Adicionar edição de produtos.
 - Registrar o usuário responsável por cada movimentação.
-- Publicar a aplicação com HTTPS.
 
 ## 👤 Autor
 
