@@ -103,19 +103,17 @@ Os dados ficam salvos no navegador e no dispositivo utilizado. Não são sincron
 
 ## 🖼️ Imagens da aplicação
 
-### Tela inicial e formulário
+### Seleção de modelos de bateria
 
-![Tela inicial e formulário](Imagem%20Colada.png)
+![Seleção de modelos de bateria](Imagem%20Colada.png)
 
-Mostra o título, os indicadores e o cadastro de uma nova bateria.
+A imagem destaca o campo de cadastro e a lista de modelos organizados por categoria, incluindo baterias automotivas de diferentes marcas e capacidades.
 
-### Estoque, filtros e histórico
+### Histórico e exportação
 
-![Estoque, filtros e histórico](Imagem%20Colada%202.png)
+![Histórico e exportação](Imagem%20Colada%202.png)
 
-Mostra a tabela de estoque, os filtros e a área de histórico de movimentações.
-
-> Outras imagens serão adicionadas após os testes de cadastro, entrada, venda, pesquisa e exportação.
+A imagem destaca o histórico permanente de movimentações, o botão **Exportar Excel** e a opção de limpar o histórico.
 
 ## ⚠️ Regras e limitações
 
